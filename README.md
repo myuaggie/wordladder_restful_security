@@ -1,16 +1,25 @@
-###How to  Use  
-####without auth
-* /hello  
+### How to Use
+#### without auth
 
-####with auth
-* /security
-* /wordladder?dict=dictionary.txt&word1=code&word2=data
+/hello
+#### with auth
 
-####log out
-* /logout
+/security
+/wordladder?dict=dictionary.txt&word1=code&word2=data
+#### log out
 
-####available account
-* *username*: admin   
-*password*:123
-* *username*: user1   
-*password*:user1
+/logout
+#### available account
+
+Database
+
+![db](wordladder_security_db.png)
+
+username: tom
+password: tom
+
+username: jerry
+password: jerry
+
+username: may
+password: may
