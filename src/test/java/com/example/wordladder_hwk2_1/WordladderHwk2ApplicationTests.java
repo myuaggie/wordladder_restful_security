@@ -34,4 +34,10 @@ public class WordladderHwk2ApplicationTests {
 		App wl=new App("dictionary.txt","marty","keith");
 		Assert.assertEquals("The two words must be found in the dictionary.",wl.getRes());
 	}
+
+	@Test
+	public void test5() {
+		App wl=new App("smalldict1.txt","code","data");
+		Assert.assertEquals("A ladder from data back to code:data date cate cade code \n",wl.getRes());
+	}
 }
