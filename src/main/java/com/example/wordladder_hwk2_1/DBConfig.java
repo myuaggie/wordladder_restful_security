@@ -14,7 +14,7 @@ import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-
+import java.net.*;
 @Configuration
 @EnableTransactionManagement
 @PropertySource("classpath:database.properties")
@@ -22,11 +22,11 @@ public class DBConfig {
     @Autowired
     private Environment env;
     @Bean
-    public HibernateTemplate hibernateTemplate() {
+    public HibernateTemplate hibernateTemplate()throws URISyntaxException {
         return new HibernateTemplate(sessionFactory());
     }
     @Bean
-    public SessionFactory sessionFactory() {
+    public SessionFactory sessionFactory()throws URISyntaxException {
         LocalSessionFactoryBean lsfb = new LocalSessionFactoryBean();
         lsfb.setDataSource(getDataSource());
         lsfb.setPackagesToScan("com.example.wordladder_hwk2_1");
@@ -39,16 +39,28 @@ public class DBConfig {
         return lsfb.getObject();
     }
     @Bean
-    public DataSource getDataSource() {
-        BasicDataSource dataSource = new BasicDataSource();
+    public DataSource getDataSource ()throws URISyntaxException {
+        /*BasicDataSource dataSource = new BasicDataSource();
         dataSource.setDriverClassName(env.getProperty("database.driverClassName"));
         dataSource.setUrl(env.getProperty("database.url"));
         dataSource.setUsername(env.getProperty("database.username"));
         dataSource.setPassword(env.getProperty("database.password"));
-        return dataSource;
+        return dataSource;*/
+        URI dbUri = new URI(System.getenv("CLEARDB_DATABASE_URL"));
+
+        String username = dbUri.getUserInfo().split(":")[0];
+        String password = dbUri.getUserInfo().split(":")[1];
+        String dbUrl = "jdbc:mysql://" + dbUri.getHost() + dbUri.getPath();
+
+        BasicDataSource basicDataSource = new BasicDataSource();
+        basicDataSource.setUrl(dbUrl);
+        basicDataSource.setUsername(username);
+        basicDataSource.setPassword(password);
+
+        return basicDataSource;
     }
     @Bean
-    public HibernateTransactionManager hibernateTransactionManager(){
+    public HibernateTransactionManager hibernateTransactionManager()throws URISyntaxException{
         return new HibernateTransactionManager(sessionFactory());
     }
     private Properties hibernateProperties() {
