@@ -33,23 +33,23 @@ public class App {
 		//System.out.println(fileName);
 		//get the dictionary file
 		
-		String fileName=this.getClass().getResource("/").getPath().toString();
-		File file = new File(fileName+"res/"+this.dict);  
+		//String fileName=this.getClass().getResource("/").getPath().toString();
+		/*File file = new File(fileName+"res/"+this.dict);
 		if (!file.exists()) {
 			res=this.dict+" no existence.";
 			return res;
 			//fileName=br.readLine();
 			//file=new File(fileName);
+		}*/
+		ClassLoader cl = this.getClass().getClassLoader();
+		InputStream inputStream;
+		//FileInputStream inputStream=null;
+		inputStream =cl.getResourceAsStream("res/"+this.dict);
+		if (inputStream==null){
+			res=this.dict+" no existence.";
+			return res;
 		}
-		FileInputStream inputStream=null;
-		try {
-			inputStream = new FileInputStream(fileName+"res/"+this.dict);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
-		
-        BufferedReader brDict = new BufferedReader(new InputStreamReader(inputStream)); 
+		BufferedReader brDict = new BufferedReader(new InputStreamReader(inputStream));
         String dictLine="";
 		try {
 			dictLine = brDict.readLine();
